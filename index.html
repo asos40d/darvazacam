@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Camera Demo</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 20px; }
+    video, canvas { width: 90%; max-width: 400px; border-radius: 12px; margin-top: 10px; }
+    button { margin-top: 15px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>📷 My Camera App</h1>
+  <video id="video" autoplay playsinline></video><br>
+  <button id="capture">Take Photo</button>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture');
+    const context = canvas.getContext('2d');
+
+    // Kamerayı aç
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        alert("Camera error: " + err);
+      });
+
+    // Foto çek
+    captureBtn.addEventListener('click', () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    });
+  </script>
+</body>
+</html>
